@@ -1,5 +1,6 @@
-import { Markup } from "telegraf";
-import CMD_TEXT from "../config/conts.js";
+
+const { Markup } = require('telegraf');
+const { CMD_TEXT } = require('../config/consts');
 
 
 const mainMenu = 
@@ -13,7 +14,7 @@ const backButtonMenu =
                 [CMD_TEXT.menu]
         ])
 
-export default {
+module.exports = {
         mainMenu,
         backButtonMenu
 }
