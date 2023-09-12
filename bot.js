@@ -9,11 +9,18 @@ const setupBot = () => {
 		console.log(ctx);
 		return next();
 	});
-	// bot.start(start);
-	bot.hears(CMD_TEXT.menu, backMenu);
+	bot.start(start);
+	// bot.hears(CMD_TEXT.menu, backMenu);
 	// bot.hears('хочу есть', eatbro);
 	// bot.hears('Леня',hey)
-
+	
+	
+	bot.command('key', (ctx) => ctx.reply('Hello',{
+		...Markup.keyboard([
+			[CMD_TEXT.weatherI],
+			[CMD_TEXT.weatherNotI],
+		]).resize()
+	}))
 	/*   bot.use(session())
   bot.on('message', async ctx => {    
     if (ctx.session === undefined) {
@@ -24,9 +31,13 @@ const setupBot = () => {
       debug('Session already set to', ctx.session)
     }
   }) */
+	bot.action("yes", (ctx) => {
+		return ctx.answerCbQuery("Option 1 selected!");
+	});
 
-	createDebug.enable("telegraf:client test");
-
+	bot.action("no", (ctx) => {
+		return ctx.answerCbQuery("Option 2 selected!");
+	});
 	return bot;
 };
 /* function sendLiveLocation(ctx) {
