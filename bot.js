@@ -2,6 +2,7 @@ const { Telegraf, session } = require("telegraf");
 const { start, backMenu, eatbro, hey } = require("./controllers/commands.js");
 const { CMD_TEXT } = require("./config/consts.js");
 const { Markup } = require("telegraf");
+const { mainMenu } = require("./utils/buttons.js");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 const setupBot = () => {
@@ -9,18 +10,29 @@ const setupBot = () => {
 		console.log(ctx);
 		return next();
 	});
-	bot.start(start);
-	// bot.hears(CMD_TEXT.menu, backMenu);
+	// bot.start(start);
+
+	bot.start(async (ctx) => {
+		await ctx.reply(
+			"Like?",
+			Markup.inlineKeyboard([
+				[Markup.button.callback("👍", "like")],
+				[Markup.button.callback("👎", "dislike")],
+			]).resize()
+		)
+	});
+	bot.action("like", (ctx) => ctx.editMessageText("🎉 Awesome! 🎉"));
+	bot.action("dislike", (ctx) => ctx.editMessageText("okey"));
+
+	/* bot.command('weather',async (ctx) => {
+		await ctx.reply(`Hello ${ctx.state.role}`,
+			mainMenu
+		);
+	}) */
+	bot.hears(CMD_TEXT.menu, backMenu);
 	// bot.hears('хочу есть', eatbro);
 	// bot.hears('Леня',hey)
-	
-	
-	bot.command('key', (ctx) => ctx.reply('Hello',{
-		...Markup.keyboard([
-			[CMD_TEXT.weatherI],
-			[CMD_TEXT.weatherNotI],
-		]).resize()
-	}))
+
 	/*   bot.use(session())
   bot.on('message', async ctx => {    
     if (ctx.session === undefined) {

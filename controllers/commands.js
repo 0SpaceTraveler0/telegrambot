@@ -1,7 +1,6 @@
 const mainMenu = require('..//utils/buttons.js');
-
 const start = ctx => ctx.reply('Здоров, меня зовут Леня/Кент, откликаюсь только на это', {
-        ...mainMenu
+        mainMenu
 }) 
 
 const backMenu = ctx => ctx.reply('ты в меню',{
