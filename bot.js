@@ -1,18 +1,36 @@
-const { Telegraf, session } = require("telegraf");
-const { start, backMenu, eatbro, hey } = require("./controllers/commands.js");
+const { Telegraf, session, Scenes } = require("telegraf");
+const {
+	start,
+	backMenu,
+	eatbro,
+	hey,
+	startWhatWeather,
+} = require("./controllers/commands.js");
 const { CMD_TEXT } = require("./config/consts.js");
 const { Markup } = require("telegraf");
-const { mainMenu } = require("./utils/buttons.js");
+const { whatWeatherScene } = require("./controllers/weatherScene.js");
+
 const bot = new Telegraf(process.env.BOT_TOKEN);
+
+const stage = new Scenes.Stage([whatWeatherScene]);
 
 const setupBot = () => {
 	bot.use((ctx, next) => {
+		console.log(ctx.message.chat.type);
+		console.log("------------------");
 		console.log(ctx);
 		return next();
 	});
-	// bot.start(start);
 
-	bot.start(async (ctx) => {
+	bot.use(session({ collectionName: "sessions" }));
+	bot.use(stage.middleware());
+
+	bot.start(start);
+	bot.hears(CMD_TEXT.menu, backMenu);
+	bot.hears(CMD_TEXT.weatherI, startWhatWeather);
+	// bot.hears('хочу есть', eatbro);
+	// bot.hears('Леня',hey)
+	/* 	bot.start(async (ctx) => {
 		await ctx.reply(
 			"Like?",
 			Markup.inlineKeyboard([
@@ -22,16 +40,11 @@ const setupBot = () => {
 		)
 	});
 	bot.action("like", (ctx) => ctx.editMessageText("🎉 Awesome! 🎉"));
-	bot.action("dislike", (ctx) => ctx.editMessageText("okey"));
+	bot.action("dislike", (ctx) => ctx.editMessageText("okey")); */
 
-	/* bot.command('weather',async (ctx) => {
-		await ctx.reply(`Hello ${ctx.state.role}`,
-			mainMenu
-		);
+	/* bot.on('text',async (ctx) => {
+		await ctx.reply(`Hello world`);
 	}) */
-	bot.hears(CMD_TEXT.menu, backMenu);
-	// bot.hears('хочу есть', eatbro);
-	// bot.hears('Леня',hey)
 
 	/*   bot.use(session())
   bot.on('message', async ctx => {    
@@ -43,13 +56,7 @@ const setupBot = () => {
       debug('Session already set to', ctx.session)
     }
   }) */
-	bot.action("yes", (ctx) => {
-		return ctx.answerCbQuery("Option 1 selected!");
-	});
 
-	bot.action("no", (ctx) => {
-		return ctx.answerCbQuery("Option 2 selected!");
-	});
 	return bot;
 };
 /* function sendLiveLocation(ctx) {

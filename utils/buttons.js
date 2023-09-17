@@ -1,20 +1,19 @@
+const { Markup } = require("telegraf");
+const { CMD_TEXT } = require("../config/consts");
 
-const { Markup } = require('telegraf');
-const { CMD_TEXT } = require('../config/consts');
+const mainMenu = Markup.keyboard([
+	[CMD_TEXT.weatherI],
+	[CMD_TEXT.weatherNotI],
+]).resize();
 
+const backButtonMenu = Markup.keyboard([[CMD_TEXT.menu]]).resize;
 
-const mainMenu = 
-        Markup.keyboard([
-                [CMD_TEXT.weatherI],
-                [CMD_TEXT.weatherNotI],
-        ]).resize();
-
-const backButtonMenu = 
-        Markup.keyboard([
-                [CMD_TEXT.menu]
-        ])
-
+const backButtonMenuAndLocation = Markup.keyboard([
+	Markup.button.locationRequest("Моё местоположение"),
+	Markup.button.text(CMD_TEXT.menu),
+]).resize
 module.exports = {
-        mainMenu,
-        backButtonMenu
-}
+	mainMenu,
+	backButtonMenu,
+	backButtonMenuAndLocation,
+};

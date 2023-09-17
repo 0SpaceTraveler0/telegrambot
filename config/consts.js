@@ -1,10 +1,11 @@
 //текстовые команды
 const CMD_TEXT = {
-        weatherI: 'Узнать погоду у себя',
-        weatherNotI: 'Погода в другом месте',
-        menu: 'В меню' 
-}
+	weatherI: "Узнать погоду у себя",
+	weatherNotI: "Погода в другом месте",
+	menu: "В меню",
+};
 
 module.exports = {
-        CMD_TEXT
-} 
+	URL_API_WEATHER: "https://api.open-meteo.com/v1/forecast",
+	CMD_TEXT,
+};
